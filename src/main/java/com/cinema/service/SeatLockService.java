@@ -7,15 +7,17 @@ import java.time.Duration;
 
 @Service
 public class SeatLockService {
-    private final StringRedisTemplate redisTemplate;
+    private final StringRedisTemplate redis;
 
-    public SeatLockService(StringRedisTemplate redisTemplate) {
-        this.redisTemplate = redisTemplate;
+    public SeatLockService(StringRedisTemplate r) {
+        this.redis = r;
     }
 
-    public boolean lockSeat(Long showId, String seat) {
-        String key = "lock:" + showId + ":" + seat;
-        Boolean success = redisTemplate.opsForValue().setIfAbsent(key, "LOCKED", Duration.ofMinutes(5));
-        return Boolean.TRUE.equals(success);
+    public boolean lock(String key) {
+        return Boolean.TRUE.equals(redis.opsForValue().setIfAbsent(key, "LOCK", Duration.ofMinutes(5)));
+    }
+
+    public void release(String key) {
+        redis.delete(key);
     }
 }

@@ -1,5 +1,8 @@
-# Cinema Booking Platform
-- Redis seat locking
-- Kafka event publishing
-- MySQL persistence
-- Strategy pricing
+# Cinema Booking Enterprise Final
+Full system with:
+- DB entities
+- DTO
+- Redis locking
+- Kafka producer/consumer
+- Pricing strategy
+- Full APIs

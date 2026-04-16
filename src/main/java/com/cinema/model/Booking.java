@@ -11,6 +11,6 @@ public class Booking {
     private Long id;
     private Long userId;
     private Long showId;
-    private String status;
     private Double totalAmount;
+    private String status;
 }
