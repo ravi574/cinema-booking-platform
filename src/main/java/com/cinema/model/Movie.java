@@ -5,12 +5,11 @@ import lombok.Data;
 
 @Entity
 @Data
-public class Booking {
+public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long userId;
-    private Long showId;
-    private Double totalAmount;
-    private String status;
+    private String name;
+    private String language;
+    private String genre;
 }

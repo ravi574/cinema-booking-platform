@@ -5,12 +5,17 @@ import lombok.Data;
 
 @Entity
 @Data
-public class Booking {
+public class Payment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long userId;
-    private Long showId;
-    private Double totalAmount;
-    private String status;
+
+    private Long bookingId;
+
+    private Double amount;
+
+    private String status; // INITIATED, SUCCESS, FAILED
+
+    private String transactionId;
 }

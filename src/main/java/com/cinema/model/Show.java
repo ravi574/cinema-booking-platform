@@ -3,14 +3,15 @@ package com.cinema.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Data
-public class Booking {
+public class Show {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long userId;
-    private Long showId;
-    private Double totalAmount;
-    private String status;
+    private Long movieId;
+    private Long theatreId;
+    private LocalDateTime startTime;
 }
