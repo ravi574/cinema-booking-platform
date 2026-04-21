@@ -1,6 +1,8 @@
 package com.cinema.service;
 
 import com.cinema.dto.BookingRequest;
+import com.cinema.exception.SeatAlreadyLockedException;
+import com.cinema.exception.SeatNotAvailableException;
 import com.cinema.model.*;
 import com.cinema.repository.*;
 import com.cinema.strategy.PricingStrategy;
@@ -31,12 +33,12 @@ public class BookingService {
     public Booking book(BookingRequest req) {
         for (String seat : req.getSeats()) {
             if (!lockService.lock("lock:" + req.getShowId() + ":" + seat))
-                throw new RuntimeException("Seat locked " + seat);
+                throw new SeatAlreadyLockedException("Seat locked " + seat);
         }
         List<ShowSeat> seats = seatRepo.findByShowIdAndSeatNumberIn(req.getShowId(), req.getSeats());
         for (ShowSeat s : seats) {
             if (s.getStatus() != SeatStatus.AVAILABLE)
-                throw new RuntimeException("Seat not available " + s.getSeatNumber());
+                throw new SeatNotAvailableException("Seat not available " + s.getSeatNumber());
             s.setStatus(SeatStatus.BOOKED);
         }
         seatRepo.saveAll(seats);
