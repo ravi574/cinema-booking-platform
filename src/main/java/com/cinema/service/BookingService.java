@@ -51,4 +51,29 @@ public class BookingService {
         producer.send(b.getId().toString());
         return b;
     }
+    @Transactional
+    public Booking cancelBooking(Long bookingId) {
+
+        Booking booking = bookingRepo.findById(bookingId)
+                .orElseThrow(() -> new RuntimeException("Booking not found"));
+
+        if (!"CONFIRMED".equals(booking.getStatus())) {
+            throw new RuntimeException("Only confirmed bookings can be cancelled");
+        }
+
+        booking.setStatus("CANCELLED");
+
+        // Release seats
+        for (ShowSeat seat : booking.getSeats()) {
+            seat.setStatus(SeatStatus.AVAILABLE);
+            seatRepo.save(seat);
+
+            // also release Redis lock
+            String key ="lock:" + seat.getId() + ":" + seat.getSeatNumber();
+            lockService.release(seat.getShow().getId().toString());
+        }
+
+        bookingRepo.save(booking);
+        return booking;
+    }
 }
