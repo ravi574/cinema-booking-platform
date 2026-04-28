@@ -1,7 +1,6 @@
 package com.cinema.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,11 +23,7 @@ public class Booking {
     private Show show;
 
     @ManyToMany
-    @JoinTable(
-            name = "booking_seats",
-            joinColumns = @JoinColumn(name = "booking_id"),
-            inverseJoinColumns = @JoinColumn(name = "seat_id")
-    )
+    @JoinTable(name = "booking_seats", joinColumns = @JoinColumn(name = "booking_id"), inverseJoinColumns = @JoinColumn(name = "seat_id"))
     private List<ShowSeat> seats;
 
     private Double totalAmount;

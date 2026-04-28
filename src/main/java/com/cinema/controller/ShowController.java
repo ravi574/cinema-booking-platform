@@ -1,7 +1,9 @@
 package com.cinema.controller;
 
-import com.cinema.model.*;
-import com.cinema.repository.*;
+import com.cinema.model.Show;
+import com.cinema.model.ShowSeat;
+import com.cinema.repository.ShowRepository;
+import com.cinema.repository.ShowSeatRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

@@ -3,14 +3,17 @@ package com.cinema.service;
 import com.cinema.dto.BookingRequest;
 import com.cinema.exception.SeatAlreadyLockedException;
 import com.cinema.exception.SeatNotAvailableException;
-import com.cinema.model.*;
-import com.cinema.repository.*;
+import com.cinema.model.Booking;
+import com.cinema.model.SeatStatus;
+import com.cinema.model.ShowSeat;
+import com.cinema.repository.BookingRepository;
+import com.cinema.repository.ShowSeatRepository;
 import com.cinema.strategy.PricingStrategy;
 import com.cinema.kafka.BookingProducer;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.List;
 
 @Service
 public class BookingService {
@@ -51,6 +54,7 @@ public class BookingService {
         producer.send(b.getId().toString());
         return b;
     }
+
     @Transactional
     public Booking cancelBooking(Long bookingId) {
 
@@ -69,7 +73,7 @@ public class BookingService {
             seatRepo.save(seat);
 
             // also release Redis lock
-            String key ="lock:" + seat.getId() + ":" + seat.getSeatNumber();
+            String key = "lock:" + seat.getId() + ":" + seat.getSeatNumber();
             lockService.release(seat.getShow().getId().toString());
         }
 
